@@ -1,0 +1,14 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "description": "Tetris in your browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anthony Good",
+  "license": "ISC",
+  "dependencies": {
+    "grid-games": "git+ssh://git@github.com/anthonygood/grid-games.git"
+  }
+}
