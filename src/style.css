@@ -1,0 +1,19 @@
+html {
+  background-color: black;
+}
+
+.row {
+  display: flex;
+  height: 10%;
+}
+
+.cell {
+  display: inline;
+  height: 30px;
+  width: 30px;
+  border: 1px solid white;
+}
+
+.cell.active {
+  background-color: white;
+}
