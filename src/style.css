@@ -1,9 +1,14 @@
 html {
   background-color: black;
+  min-height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
 }
 
 .row {
   display: flex;
+  justify-content: center;
   height: 10%;
 }
 
@@ -16,4 +21,12 @@ html {
 
 .cell.active {
   background-color: white;
+}
+
+.gameover .cell {
+  background-color: white;
+}
+
+.gameover .cell.active {
+  background-color: black;
 }

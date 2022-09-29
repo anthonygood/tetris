@@ -6,7 +6,7 @@ const times = (n, fn) => {
 
 // Actually create the DOM structure, vs updating it
 const render = (height, width) => {
-  const app = document.querySelector('#app')
+  const appContainer = document.querySelector('#app')
   const virtualDom = [] // lol
 
   times(height, () => {
@@ -23,11 +23,11 @@ const render = (height, width) => {
       virtualRow.push(cell)
     })
 
-    app.appendChild(row)
+    appContainer.appendChild(row)
     virtualDom.push(virtualRow)
   })
 
-  return virtualDom
+  return { appContainer, virtualDom }
 }
 
 const update = (tetris, virtualDom) => {
@@ -51,11 +51,12 @@ const update = (tetris, virtualDom) => {
 }
 
 const inputConfig = {
-  left: 'a',
-  right: 'd',
-  down: 's',
-  rotateRight: 'w',
-  rotateLeft: 'e',
+  left: 'KeyA',
+  right: 'KeyD',
+  down: 'KeyS',
+  rotateRight: 'KeyW',
+  rotateLeft: 'KeyE',
+  pause: 'KeyP',
 }
 
 const onKeypress = tetris => event => {
@@ -63,19 +64,19 @@ const onKeypress = tetris => event => {
   if (code === 'ArrowRight' || code === inputConfig.right) {
     tetris.move.right()
   }
-  if (code === 'ArrowLeft'|| code === inputConfig.left) {
+  if (code === 'ArrowLeft' || code === inputConfig.left) {
     tetris.move.left()
   }
-  if (code === 'ArrowDown'|| code === inputConfig.down) {
+  if (code === 'ArrowDown' || code === inputConfig.down) {
     tetris.move.down()
   }
-  if (code === 'Space'|| code === inputConfig.rotateRight) {
+  if (code === 'Space' || code === inputConfig.rotateRight) {
     tetris.rotate()
   }
   if (code === inputConfig.rotateLeft) {
     tetris.rotate.reverse()
   }
-  if (code === 'Enter'|| code === inputConfig.drop) {
+  if (code === 'Enter' || code === inputConfig.drop) {
     tetris.drop()
   }
 }
@@ -86,7 +87,7 @@ const FRAME_INTERVAL = 100
 const play = () => {
   const tetris = new Tetris()
 
-  const virtualDom = render(tetris.height(), tetris.width())
+  const { appContainer, virtualDom } = render(tetris.height(), tetris.width())
 
   tetris.start()
   update(tetris, virtualDom)
@@ -103,6 +104,7 @@ const play = () => {
   }, FRAME_INTERVAL)
 
   tetris.on(Tetris.Events.GAME_OVER, () => {
+    appContainer.classList.add('gameover')
     clearInterval(tickInterval)
     clearInterval(renderInterval)
   })
