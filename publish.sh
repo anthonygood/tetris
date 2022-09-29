@@ -1,4 +1,5 @@
 git checkout build
+git merge main
 npm run build
 mkdir publish
 cp dist publish
