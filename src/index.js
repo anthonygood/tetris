@@ -7,7 +7,7 @@ import { render, update } from './render-board'
 import { control } from './control'
 
 const TICK_INTERVAL = 250
-const FRAME_INTERVAL = 100
+const FRAME_INTERVAL = 50
 
 const play = () => {
   const tetris = new Tetris()
