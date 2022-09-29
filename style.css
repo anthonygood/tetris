@@ -1,9 +1,14 @@
 html {
   background-color: black;
+  min-height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
 }
 
 .row {
   display: flex;
+  justify-content: center;
   height: 10%;
 }
 
@@ -11,9 +16,24 @@ html {
   display: inline;
   height: 30px;
   width: 30px;
-  border: 1px solid white;
+  border: 1px solid #989898;
+  transition: 0.2s;
+  box-shadow:
+    0 0 4px inset #989898,
+    0 0 4px #989898;
 }
 
 .cell.active {
   background-color: white;
+  border: 1px solid whitesmoke;
+  box-shadow: 0 0 20px white;
+  transition: 0s;
+}
+
+.gameover .cell {
+  background-color: white;
+}
+
+.gameover .cell.active {
+  background-color: black;
 }
