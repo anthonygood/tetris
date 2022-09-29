@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server ./dist",
+    "start:dev": "webpack watch ./src/index.js --output-filename=app.js --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "./node_modules/webpack/bin/webpack.js ./src/index.js --output-filename=app.js --mode=development",
-    "build": "./build.sh"
+    "bundle": "webpack ./src/index.js --output-filename=app.js --mode=production",
+    "build": "./build.sh",
+    "publish": "./publish.sh"
   },
   "author": "Anthony Good",
   "license": "ISC",
