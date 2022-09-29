@@ -2,7 +2,7 @@ git checkout build
 git merge main
 npm run build
 mkdir publish
-cp dist/* publish/
+cp dist/* ./
 git add publish
 git commit -m "Publish build to build branch"
 git push origin build
