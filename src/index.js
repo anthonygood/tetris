@@ -3,37 +3,8 @@ import {
   pause,
   init as initStartStop,
 } from './start-stop'
-import render from './render-board'
+import { render, update } from './render-board'
 import { control } from './control'
-
-const update = (tetris, virtualDom) => {
-  const board = tetris.compositeBoard()
-  for (let i = 0; i < tetris.height(); i++) {
-    for (let j = 0; j < tetris.width(); j++) {
-      const isActive = !!board[i][j];
-
-      const cell = virtualDom[i][j];
-      if (!cell) {
-        return console.error('cell not found at index', i, j)
-      }
-
-      if (isActive) {
-        cell.classList.add('active')
-      } else {
-        cell.classList.remove('active')
-      }
-    }
-  }
-}
-
-const inputConfig = {
-  left: 'KeyA',
-  right: 'KeyD',
-  down: 'KeyS',
-  rotateRight: 'KeyW',
-  rotateLeft: 'KeyE',
-  pause: 'KeyP',
-}
 
 const TICK_INTERVAL = 250
 const FRAME_INTERVAL = 100
@@ -64,7 +35,5 @@ const play = () => {
 
   start()
 }
-
-window.Tetris = Tetris
 
 play()

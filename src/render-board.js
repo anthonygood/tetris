@@ -3,7 +3,7 @@ const times = (n, fn) => {
 }
 
 // Actually create the DOM structure, vs updating it
-const render = (height, width) => {
+export const render = (height, width) => {
   const appContainer = document.querySelector('#app')
   const virtualDom = [] // lol
 
@@ -28,4 +28,22 @@ const render = (height, width) => {
   return { appContainer, virtualDom }
 }
 
-export default render
+export const update = (tetris, virtualDom) => {
+  const board = tetris.compositeBoard()
+  for (let i = 0; i < tetris.height(); i++) {
+    for (let j = 0; j < tetris.width(); j++) {
+      const isActive = !!board[i][j];
+
+      const cell = virtualDom[i][j];
+      if (!cell) {
+        return console.error('cell not found at index', i, j)
+      }
+
+      if (isActive) {
+        cell.classList.add('active')
+      } else {
+        cell.classList.remove('active')
+      }
+    }
+  }
+}
