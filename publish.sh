@@ -3,7 +3,7 @@ git merge main
 npm run build
 mkdir publish
 cp dist/* ./
-git add publish
+git add .
 git commit -m "Publish build to build branch"
 git push origin build
 echo "You're now on the build branch!"
