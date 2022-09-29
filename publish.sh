@@ -1,6 +1,6 @@
 git checkout build
-rm -rf dist
 npm run build
+mkdir publish
 cp dist publish
 git add publish
 git commit -m "Publish build to build branch"
