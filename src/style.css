@@ -10,6 +10,23 @@ html {
   display: flex;
   justify-content: center;
   height: 10%;
+  transition: 0.5s;
+}
+
+.row.clear {
+  background-color: white;
+  box-shadow: 0 0 25px white;
+  transition: 0s;
+}
+
+.flash {
+  animation: flasher 0.25s linear infinite;
+}
+
+@keyframes flasher {
+  50% {
+    opacity: 0;
+  }
 }
 
 .cell {
