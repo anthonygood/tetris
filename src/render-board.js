@@ -5,11 +5,13 @@ const times = (n, fn) => {
 // Actually create the DOM structure, vs updating it
 export const render = (height, width) => {
   const appContainer = document.querySelector('#app')
-  const virtualDom = [] // lol
+  const domRows = []
+  const domCells = []
 
   times(height, () => {
     const row = document.createElement('div')
     row.classList.add('row')
+    domRows.push(row)
 
     const virtualRow = []
 
@@ -22,14 +24,13 @@ export const render = (height, width) => {
     })
 
     appContainer.appendChild(row)
-    virtualDom.push(virtualRow)
+    domCells.push(virtualRow)
   })
 
-  return { appContainer, virtualDom }
+  return { appContainer, domRows, domCells }
 }
 
-export const update = (tetris, virtualDom) => {
-  const board = tetris.compositeBoard()
+export const update = (tetris, virtualDom) => (board = tetris.compositeBoard()) => {
   for (let i = 0; i < tetris.height(); i++) {
     for (let j = 0; j < tetris.width(); j++) {
       const isActive = !!board[i][j];

@@ -13,7 +13,7 @@ export const init = ({
     )
 
     intervals.renderInterval = setInterval(
-      () => requestAnimationFrame(renderFn),
+      () => requestAnimationFrame(() => renderFn()),
       frameInterval
     )
   }
