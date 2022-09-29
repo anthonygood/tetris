@@ -4,6 +4,7 @@ import {
   init as initStartStop,
 } from './start-stop'
 import render from './render-board'
+import { control } from './control'
 
 const update = (tetris, virtualDom) => {
   const board = tetris.compositeBoard()
@@ -34,30 +35,6 @@ const inputConfig = {
   pause: 'KeyP',
 }
 
-const controlTetromino = tetris => event => {
-  if (tetris.paused) return
-
-  const { code } = event
-  if (code === 'ArrowRight' || code === inputConfig.right) {
-    tetris.move.right()
-  }
-  if (code === 'ArrowLeft' || code === inputConfig.left) {
-    tetris.move.left()
-  }
-  if (code === 'ArrowDown' || code === inputConfig.down) {
-    tetris.move.down()
-  }
-  if (code === 'Space' || code === inputConfig.rotateRight) {
-    tetris.rotate()
-  }
-  if (code === inputConfig.rotateLeft) {
-    tetris.rotate.reverse()
-  }
-  if (code === 'Enter' || code === inputConfig.drop) {
-    tetris.drop()
-  }
-}
-
 const TICK_INTERVAL = 250
 const FRAME_INTERVAL = 100
 
@@ -81,9 +58,8 @@ const play = () => {
     stop()
   })
 
-  const control = controlTetromino(tetris)
   const togglePause = pause(tetris, start, stop)
-  document.addEventListener('keydown', control)
+  document.addEventListener('keydown', control(tetris))
   document.addEventListener('keydown', togglePause)
 
   start()

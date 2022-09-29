@@ -12,8 +12,6 @@ export const init = ({
       tickInterval
     )
 
-    console.log('renderFn!', renderFn)
-
     intervals.renderInterval = setInterval(
       () => requestAnimationFrame(renderFn),
       frameInterval
@@ -21,7 +19,6 @@ export const init = ({
   }
 
   const stop = () => {
-    console.log('stop!', intervals)
     clearInterval(intervals.tickInterval)
     clearInterval(intervals.renderInterval)
   }
