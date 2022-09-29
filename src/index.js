@@ -1,4 +1,8 @@
 import { Tetris } from 'grid-games'
+import {
+  pause,
+  init as initStartStop,
+} from './start-stop'
 
 const times = (n, fn) => {
   new Array(n).fill(0).forEach(fn)
@@ -38,7 +42,7 @@ const update = (tetris, virtualDom) => {
 
       const cell = virtualDom[i][j];
       if (!cell) {
-        return console.log('cell not found at index', i, j)
+        return console.error('cell not found at index', i, j)
       }
 
       if (isActive) {
@@ -59,7 +63,9 @@ const inputConfig = {
   pause: 'KeyP',
 }
 
-const onKeypress = tetris => event => {
+const controlTetromino = tetris => event => {
+  if (tetris.paused) return
+
   const { code } = event
   if (code === 'ArrowRight' || code === inputConfig.right) {
     tetris.move.right()
@@ -92,22 +98,24 @@ const play = () => {
   tetris.start()
   update(tetris, virtualDom)
 
-  const keypressListener = onKeypress(tetris)
-
-  document.addEventListener('keydown', keypressListener)
-
-  const tickInterval = setInterval(() => {
-    tetris.tick()
-  }, TICK_INTERVAL)
-  const renderInterval = setInterval(() => {
-    requestAnimationFrame(() => update(tetris, virtualDom))
-  }, FRAME_INTERVAL)
+  const { start, stop } = initStartStop({
+    tickFn: () => tetris.tick(),
+    renderFn: () => update(tetris, virtualDom),
+    tickInterval: TICK_INTERVAL,
+    frameInterval: FRAME_INTERVAL,
+  })
 
   tetris.on(Tetris.Events.GAME_OVER, () => {
     appContainer.classList.add('gameover')
-    clearInterval(tickInterval)
-    clearInterval(renderInterval)
+    stop()
   })
+
+  const control = controlTetromino(tetris)
+  const togglePause = pause(tetris, start, stop)
+  document.addEventListener('keydown', control)
+  document.addEventListener('keydown', togglePause)
+
+  start()
 }
 
 window.Tetris = Tetris
