@@ -4,11 +4,19 @@
   "description": "Tetris in your browser",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "http-server ./dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "./node_modules/webpack/bin/webpack.js ./src/index.js --output-filename=app.js --mode=development",
+    "build": "./build.sh"
   },
   "author": "Anthony Good",
   "license": "ISC",
   "dependencies": {
     "grid-games": "git+ssh://git@github.com/anthonygood/grid-games.git"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }
