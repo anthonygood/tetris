@@ -19,6 +19,18 @@ html {
   transition: 0s;
 }
 
+.debug, .cell.debug, .cell.active.debug {
+  background-color: #ee6464;
+  border: 1px solid #ee6464;
+  box-shadow: 0 0 28px #ff0000, 0 0 19px inset red;
+}
+
+.special, .cell.special, .cell.active.special {
+  background-color: #64e5ee;
+  border: 1px solid #64eecc;
+  box-shadow: 0 0 28px #00dfff, 0 0 19px inset #00ffd3;
+}
+
 .flash {
   animation: flasher 0.25s linear infinite;
 }

@@ -51,10 +51,13 @@ const play = () => {
 
   tetris.on(Tetris.Events.GAME_OVER, gameoverEffect(stop, appContainer))
   tetris.on(Tetris.Events.LINE_CLEAR, clearEffect(start, stop, updateBoard, domCells))
+  tetris.on(Tetris.Events.TETROMINO_LANDING, console.log)
 
   const togglePause = pause(tetris, start, stop)
   document.addEventListener('keydown', control(tetris))
   document.addEventListener('keydown', togglePause)
+
+  window.tetris = tetris
 
   start()
 }
