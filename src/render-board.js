@@ -4,9 +4,16 @@ const times = (n, fn) => {
 
 // Actually create the DOM structure, vs updating it
 export const render = (height, width) => {
+
   const appContainer = document.querySelector('#app')
+
+  const gridContainer = document.createElement('div')
+  gridContainer.classList.add('grid-container')
+  appContainer.appendChild(gridContainer)
+
   const domRows = []
   const domCells = []
+
 
   times(height, i => {
     const row = document.createElement('div')
@@ -26,7 +33,7 @@ export const render = (height, width) => {
       virtualRow.push(cell)
     })
 
-    appContainer.appendChild(row)
+    gridContainer.appendChild(row)
     domCells.push(virtualRow)
   })
 
@@ -36,6 +43,7 @@ export const render = (height, width) => {
 export const update = (tetris, virtualDom) => (board = tetris.compositeBoard()) => {
   const { tetrominoPosition } = tetris;
   const [tetrominoX, tetrominoY] = tetrominoPosition
+  const ghostBoard = tetris.tetrominoGhost()
 
   for (let i = 0; i < tetris.height(); i++) {
     for (let j = 0; j < tetris.width(); j++) {
@@ -52,8 +60,15 @@ export const update = (tetris, virtualDom) => (board = tetris.compositeBoard()) 
         cell.classList.remove('active')
       }
 
-      const isDebug = (i === tetrominoY) && (j === tetrominoX)
-      if (isDebug) {
+      const isGhost = ghostBoard[i][j];
+      if (isGhost) {
+        cell.classList.add('ghost')
+      } else {
+        cell.classList.remove('ghost')
+      }
+
+      const isDebugCell = (i === tetrominoY) && (j === tetrominoX)
+      if (window.debug && isDebugCell) {
         cell.classList.add('special')
       } else {
         cell.classList.remove('special')
