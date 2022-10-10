@@ -1,5 +1,5 @@
 git checkout build
-git merge main
+git merge main -m "Merge master branch into build"
 npm run build
 cp dist/* ./
 git add .
