@@ -1,21 +1,59 @@
+:root {
+  --white: white;
+  --grey: #413f3f;
+  --dark-grey: #272525;
+  --white-border: whitesmoke;
+  --light-red: #ee6464;
+  --red: red;
+  --orange: #fdc752;
+  --magenta: #ffa9ff;
+  --yellow: #ffff17;
+  --light-blue: #64e5ee;
+  --blue: #00dfff;
+  --turquoise: #64eecc;
+  --turqouise-shadow-inset: #00ffd3;
+  --black: black;
+}
+
 html {
-  background-color: black;
+  background-color: var(--black);
   min-height: 100%;
   display: flex;
   flex-flow: column;
   justify-content: center;
 }
 
+body {
+  overflow-x: clip;
+}
+
+.skew {
+  transform: skew(355deg);
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+}
+
+.grid-container {
+  border: 4px solid var(--white);
+  border-top: none;
+  box-shadow:
+    0 0 6px -6px white,
+    64px 52px 63px -37px var(--dark-grey),
+    -64px 52px 63px -37px var(--dark-grey);
+}
+
 .row {
   display: flex;
   justify-content: center;
-  height: 10%;
   transition: 0.5s;
 }
 
 .row.clear {
-  background-color: white;
-  box-shadow: 0 0 25px white;
+  background-color: var(--white);
+  box-shadow: 0 0 25px var(--white);
   transition: 0s;
 }
 
@@ -33,24 +71,96 @@ html {
   display: inline;
   height: 30px;
   width: 30px;
-  border: 1px solid #989898;
-  transition: 0.2s;
+  border: 1px solid var(--grey);
+  transition: 0.5s cubic-bezier(.06,.91,0,1);
   box-shadow:
-    0 0 4px inset #989898,
-    0 0 4px #989898;
+    0 0 4px inset var(--grey),
+    0 0 4px var(--grey);
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  position: relative;
 }
 
-.cell.active {
-  background-color: white;
-  border: 1px solid whitesmoke;
-  box-shadow: 0 0 20px white;
+.cell .interior {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+}
+
+.active {
+  z-index: 2;
+  background-color: var(--white);
+  border: 1px solid var(--white-border);
+  box-shadow: 0 0 20px var(--white);
   transition: 0s;
 }
 
+.ghost:not(.active) {
+  z-index: 1;
+  background-color: var(--white);
+  border: 1px solid transparent;
+  box-shadow: 0px 0px 5px 1px var(--white);
+}
+
+.ghost:not(.active) .interior {
+  background-color: var(--black);
+}
+.ghost.neighbour-left .interior.a {
+  left: -20%;
+}
+.ghost.neighbour-top .interior.b {
+  top: -20%;
+}
+.ghost.neighbour-top-left .interior.a {
+  top: -20%;
+  left: -20%;
+}
+
+.debug {
+  z-index: 1;
+  background-color: var(--light-red);
+  border: 1px solid var(--light-red);
+  box-shadow: 0 0 28px var(--red), 0 0 19px inset var(--red);
+}
+
+.red {
+  z-index: 1;
+  background-color: var(--light-red);
+  border: 1px solid var(--light-red);
+  box-shadow: 0 0 28px var(--red), 0 0 19px inset var(--red);
+}
+
+.turquoise {
+  background-color: var(--light-blue);
+  border: 1px solid var(--turquoise);
+  box-shadow: 0 0 28px var(--blue), 0 0 19px inset var(--turqouise-shadow-inset);
+}
+
+.yellow {
+  background-color: var(--yellow);
+  border: 1px solid var(--yellow);
+  box-shadow: 0 0 28px var(--yellow), 0 0 19px inset var(--yellow);
+}
+
+.magenta {
+  background-color: var(--magenta);
+  border: 1px solid var(--magenta);
+  box-shadow: 0 0 28px var(--magenta), 0 0 19px inset var(--magenta);
+}
+
+.orange {
+  background-color: var(--orange);
+  border: 1px solid var(--orange);
+  box-shadow: 0 0 28px var(--orange), 0 0 19px inset var(--orange);
+}
+
 .gameover .cell {
-  background-color: white;
+  background-color: var(--white);
 }
 
 .gameover .cell.active {
-  background-color: black;
+  background-color: var(--black);
 }
