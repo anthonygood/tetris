@@ -1,6 +1,7 @@
 :root {
   --white: white;
   --grey: #413f3f;
+  --dark-grey: #272525;
   --white-border: whitesmoke;
   --light-red: #ee6464;
   --red: red;
@@ -35,6 +36,15 @@ body {
   justify-content: center;
 }
 
+.grid-container {
+  border: 4px solid var(--white);
+  border-top: none;
+  box-shadow:
+    0 0 6px -6px white,
+    64px 52px 63px -37px var(--dark-grey),
+    -64px 52px 63px -37px var(--dark-grey);
+}
+
 .row {
   display: flex;
   justify-content: center;
@@ -66,21 +76,47 @@ body {
   box-shadow:
     0 0 4px inset var(--grey),
     0 0 4px var(--grey);
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  position: relative;
+}
+
+.cell .interior {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
 }
 
 .active {
-  z-index: 1;
+  z-index: 2;
   background-color: var(--white);
   border: 1px solid var(--white-border);
   box-shadow: 0 0 20px var(--white);
   transition: 0s;
 }
 
-.ghost {
+.ghost:not(.active) {
   z-index: 1;
-  border: 2px solid var(--white-border);
-  box-shadow: 0 0 20px var(--white);
-  margin: -1px;
+  background-color: var(--white);
+  border: 1px solid transparent;
+  box-shadow: 0px 0px 5px 1px var(--white);
+}
+
+.ghost:not(.active) .interior {
+  background-color: var(--black);
+}
+.ghost.neighbour-left .interior.a {
+  left: -20%;
+}
+.ghost.neighbour-top .interior.b {
+  top: -20%;
+}
+.ghost.neighbour-top-left .interior.a {
+  top: -20%;
+  left: -20%;
 }
 
 .debug {

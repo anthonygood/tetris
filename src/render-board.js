@@ -29,6 +29,16 @@ export const render = (height, width) => {
       cell.dataset.j = cell.dataset.x = j
       cell.classList.add('cell')
 
+      const cellInterior = document.createElement('div')
+      cellInterior.classList.add('interior')
+      cellInterior.classList.add('a')
+
+      const cellInteriorB = document.createElement('div')
+      cellInteriorB.classList.add('interior')
+      cellInteriorB.classList.add('b')
+
+      cell.appendChild(cellInterior)
+      cell.appendChild(cellInteriorB)
       row.appendChild(cell)
       virtualRow.push(cell)
     })
@@ -40,6 +50,11 @@ export const render = (height, width) => {
   return { appContainer, domRows, domCells }
 }
 
+const toggleClass = (cell, bool, classname) => {
+  fn = bool ? 'add' : 'remove'
+  cell.classList[fn](classname)
+}
+
 export const update = (tetris, virtualDom) => (board = tetris.compositeBoard()) => {
   const { tetrominoPosition } = tetris;
   const [tetrominoX, tetrominoY] = tetrominoPosition
@@ -47,32 +62,28 @@ export const update = (tetris, virtualDom) => (board = tetris.compositeBoard()) 
 
   for (let i = 0; i < tetris.height(); i++) {
     for (let j = 0; j < tetris.width(); j++) {
-      const isActive = !!board[i][j];
-
       const cell = virtualDom[i][j];
       if (!cell) {
         return console.error('cell not found at index', i, j)
       }
 
-      if (isActive) {
-        cell.classList.add('active')
-      } else {
-        cell.classList.remove('active')
-      }
+      const isActive = !!board[i][j];
+      toggleClass(cell, isActive, 'active')
 
       const isGhost = ghostBoard[i][j];
-      if (isGhost) {
-        cell.classList.add('ghost')
-      } else {
-        cell.classList.remove('ghost')
-      }
+      toggleClass(cell, isGhost, 'ghost')
+      toggleClass(cell, isGhost, 'neighbour')
+
+      const neighbourTop = ghostBoard[i-1]?.[j]
+      const neighbourLeft = ghostBoard[i][j-1]
+      const neighbourTopLeft = ghostBoard[i-1]?.[j-1]
+
+      toggleClass(cell, neighbourTop, 'neighbour-top')
+      toggleClass(cell, neighbourLeft, 'neighbour-left')
+      toggleClass(cell, neighbourTop && neighbourLeft && neighbourTopLeft, 'neighbour-top-left')
 
       const isDebugCell = (i === tetrominoY) && (j === tetrominoX)
-      if (window.debug && isDebugCell) {
-        cell.classList.add('special')
-      } else {
-        cell.classList.remove('special')
-      }
+      toggleClass(cell, window.debug && isDebugCell, 'special')
     }
   }
 }
