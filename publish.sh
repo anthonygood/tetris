@@ -1,7 +1,6 @@
 git checkout build
 git merge main
 npm run build
-mkdir publish
 cp dist/* ./
 git add .
 git commit -m "Publish build to build branch"
