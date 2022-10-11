@@ -76,9 +76,6 @@ body {
   box-shadow:
     0 0 4px inset var(--grey),
     0 0 4px var(--grey);
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   position: relative;
 }
 
@@ -99,24 +96,9 @@ body {
 }
 
 .ghost:not(.active) {
-  z-index: 1;
-  background-color: var(--white);
-  border: 1px solid transparent;
-  box-shadow: 0px 0px 5px 1px var(--white);
-}
-
-.ghost:not(.active) .interior {
-  background-color: var(--black);
-}
-.ghost.neighbour-left .interior.a {
-  left: -20%;
-}
-.ghost.neighbour-top .interior.b {
-  top: -20%;
-}
-.ghost.neighbour-top-left .interior.a {
-  top: -20%;
-  left: -20%;
+  box-shadow: none;
+  border: 1px solid white;
+  box-shadow: 0 0 8px inset var(--white);
 }
 
 .debug {

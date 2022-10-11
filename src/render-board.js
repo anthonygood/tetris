@@ -29,16 +29,6 @@ export const render = (height, width) => {
       cell.dataset.j = cell.dataset.x = j
       cell.classList.add('cell')
 
-      const cellInterior = document.createElement('div')
-      cellInterior.classList.add('interior')
-      cellInterior.classList.add('a')
-
-      const cellInteriorB = document.createElement('div')
-      cellInteriorB.classList.add('interior')
-      cellInteriorB.classList.add('b')
-
-      cell.appendChild(cellInterior)
-      cell.appendChild(cellInteriorB)
       row.appendChild(cell)
       virtualRow.push(cell)
     })
