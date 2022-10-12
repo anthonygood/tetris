@@ -1,5 +1,32 @@
+import { Grid } from "grid-games"
+
 const times = (n, fn) => {
   new Array(n).fill(0).forEach((_, index) => fn(index))
+}
+
+const renderBuffer = () => {
+  const bufferContainer = document.createElement('div')
+  bufferContainer.classList.add('buffer-container')
+
+  const domBuffer = []
+
+  times(2, () => {
+    const row = document.createElement('div')
+    row.classList.add('row')
+    const virtualRow = []
+
+    times(4, () => {
+      const cell = document.createElement('div')
+      cell.classList.add('cell')
+      row.appendChild(cell)
+      virtualRow.push(cell)
+    })
+
+    bufferContainer.appendChild(row)
+    domBuffer.push(virtualRow)
+  })
+
+  return { bufferContainer, domBuffer }
 }
 
 // Actually create the DOM structure, vs updating it
@@ -13,7 +40,6 @@ export const render = (height, width) => {
 
   const domRows = []
   const domCells = []
-
 
   times(height, i => {
     const row = document.createElement('div')
@@ -37,7 +63,14 @@ export const render = (height, width) => {
     domCells.push(virtualRow)
   })
 
-  return { appContainer, domRows, domCells }
+  const { bufferContainer, domBuffer } = renderBuffer()
+  appContainer.appendChild(bufferContainer)
+
+  return {
+    appContainer,
+    cells: domCells,
+    buffer: domBuffer,
+  }
 }
 
 const toggleClass = (cell, bool, classname) => {
@@ -45,14 +78,25 @@ const toggleClass = (cell, bool, classname) => {
   cell.classList[fn](classname)
 }
 
-export const update = (tetris, virtualDom) => (board = tetris.compositeBoard()) => {
+const updateBuffer = (tetris, bufferDom) => {
+  const tetromino = tetris.buffer.peek()
+  Grid.forEach(bufferDom, (cell, [i, j]) => {
+    toggleClass(cell, tetromino[i]?.[j], 'active')
+  })
+}
+
+export const update = (tetris, cells, bufferDom) => (board = tetris.compositeBoard()) => {
   const { tetrominoPosition } = tetris;
   const [tetrominoX, tetrominoY] = tetrominoPosition
   const ghostBoard = tetris.tetrominoGhost()
 
+  if (bufferDom) {
+    updateBuffer(tetris, bufferDom)
+  }
+
   for (let i = 0; i < tetris.height(); i++) {
     for (let j = 0; j < tetris.width(); j++) {
-      const cell = virtualDom[i][j];
+      const cell = cells[i][j];
       if (!cell) {
         return console.error('cell not found at index', i, j)
       }

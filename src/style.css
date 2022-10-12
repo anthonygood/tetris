@@ -38,11 +38,16 @@ body {
 
 .grid-container {
   border: 4px solid var(--white);
+  margin: 0 20px;
   border-top: none;
   box-shadow:
     0 0 6px -6px white,
     64px 52px 63px -37px var(--dark-grey),
     -64px 52px 63px -37px var(--dark-grey);
+}
+
+.buffer-container .cell:not(.active) {
+  visibility: hidden;
 }
 
 .row {

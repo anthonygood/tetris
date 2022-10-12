@@ -15,19 +15,18 @@ const gameoverEffect = (stop, appContainer) => () => {
   stop()
 }
 
-const clearEffect = (start, stop, update, domCells) => (event) => {
-  const { indices, board } = event
-  update(board.before)
+const clearEffect = (start, stop, update, domCells) => ({ indices, board }) => {
   stop()
+  update(board.before)
   indices.forEach(index => {
     domCells[index].forEach(cell => cell.classList.add('flash'))
   })
 
   setTimeout(() => {
-    start()
     indices.forEach(index => {
       domCells[index].forEach(cell => cell.classList.remove('flash'))
     })
+    start()
   }, CLEAR_INTERVAL)
 }
 
@@ -36,11 +35,12 @@ const play = () => {
 
   const {
     appContainer,
-    domCells
+    buffer,
+    cells,
   } = render(tetris.height(), tetris.width())
 
   tetris.start()
-  const updateBoard = update(tetris, domCells)
+  const updateBoard = update(tetris, cells, buffer)
 
   const { start, stop } = initStartStop({
     tickFn: () => tetris.tick(),
@@ -50,7 +50,7 @@ const play = () => {
   })
 
   tetris.on(Tetris.Events.GAME_OVER, gameoverEffect(stop, appContainer))
-  tetris.on(Tetris.Events.LINE_CLEAR, clearEffect(start, stop, updateBoard, domCells))
+  tetris.on(Tetris.Events.LINE_CLEAR, clearEffect(start, stop, updateBoard, cells))
   tetris.on(Tetris.Events.TETROMINO_LANDING, console.log)
 
   const togglePause = pause(tetris, start, stop)
