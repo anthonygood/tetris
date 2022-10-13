@@ -5,10 +5,10 @@ const times = (n, fn) => {
 }
 
 const renderBuffer = () => {
-  const bufferContainer = document.createElement('div')
-  bufferContainer.classList.add('buffer-container')
+  const buffer = document.createElement('div')
+  buffer.classList.add('buffer-item')
 
-  const domBuffer = []
+  const cells = []
 
   times(2, () => {
     const row = document.createElement('div')
@@ -22,11 +22,11 @@ const renderBuffer = () => {
       virtualRow.push(cell)
     })
 
-    bufferContainer.appendChild(row)
-    domBuffer.push(virtualRow)
+    buffer.appendChild(row)
+    cells.push(virtualRow)
   })
 
-  return { bufferContainer, domBuffer }
+  return { buffer, cells }
 }
 
 // Actually create the DOM structure, vs updating it
@@ -43,7 +43,6 @@ export const render = (height, width) => {
 
   times(height, i => {
     const row = document.createElement('div')
-    row.dataset.i = row.dataset.y = i
     row.classList.add('row')
     domRows.push(row)
 
@@ -51,8 +50,6 @@ export const render = (height, width) => {
 
     times(width, j => {
       const cell = document.createElement('div')
-      cell.dataset.i = cell.dataset.y = i
-      cell.dataset.j = cell.dataset.x = j
       cell.classList.add('cell')
 
       row.appendChild(cell)
@@ -63,8 +60,15 @@ export const render = (height, width) => {
     domCells.push(virtualRow)
   })
 
-  const { bufferContainer, domBuffer } = renderBuffer()
+  const bufferContainer = document.createElement('div')
+  bufferContainer.classList.add('buffer-container')
   appContainer.appendChild(bufferContainer)
+  const domBuffer = []
+  times(3, () => {
+    const { buffer, cells } = renderBuffer()
+    bufferContainer.appendChild(buffer)
+    domBuffer.push(cells)
+  })
 
   return {
     appContainer,
@@ -78,8 +82,8 @@ const toggleClass = (cell, bool, classname) => {
   cell.classList[fn](classname)
 }
 
-const updateBuffer = (tetris, bufferDom) => {
-  const tetromino = tetris.buffer.peek()
+const updateBuffer = (tetromino, bufferDom) => {
+  // const tetromino = tetris.buffer.peek()
   Grid.forEach(bufferDom, (cell, [i, j]) => {
     toggleClass(cell, tetromino[i]?.[j], 'active')
   })
@@ -116,7 +120,11 @@ export const update = (tetris, cells, bufferDom) => (board = tetris.compositeBoa
   const ghostBoard = tetris.tetrominoGhost()
 
   if (bufferDom) {
-    updateBuffer(tetris, bufferDom)
+    bufferDom.forEach((buffer, i) => {
+      const bufferIndex = tetris.buffer.length - 1 - i
+      const tetromino = tetris.buffer.values[bufferIndex]
+      updateBuffer(tetromino, buffer)
+    })
   }
 
   lightmap(tetris, cells, ghostBoard)

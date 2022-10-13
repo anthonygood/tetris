@@ -5,6 +5,7 @@ export const init = ({
   renderFn,
   tickInterval,
   frameInterval,
+  game,
 }) => {
   const start = () => {
     intervals.tickInterval = setInterval(
@@ -16,11 +17,13 @@ export const init = ({
       () => requestAnimationFrame(() => renderFn()),
       frameInterval
     )
+    game.paused = false
   }
 
   const stop = () => {
     clearInterval(intervals.tickInterval)
     clearInterval(intervals.renderInterval)
+    game.paused = true
   }
 
   return { start, stop }

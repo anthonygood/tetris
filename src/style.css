@@ -50,6 +50,14 @@ body {
   visibility: hidden;
 }
 
+.buffer-item {
+  margin-bottom: 20px;
+}
+
+.buffer-item .cell {
+  transition: none;
+}
+
 .row {
   display: flex;
   justify-content: center;

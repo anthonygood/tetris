@@ -47,6 +47,7 @@ const play = () => {
     renderFn: updateBoard,
     tickInterval: TICK_INTERVAL,
     frameInterval: FRAME_INTERVAL,
+    game: tetris,
   })
 
   tetris.on(Tetris.Events.GAME_OVER, gameoverEffect(stop, appContainer))
