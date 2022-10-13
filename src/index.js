@@ -57,6 +57,16 @@ const play = () => {
   document.addEventListener('keydown', control(tetris))
   document.addEventListener('keydown', togglePause)
 
+  document.addEventListener('click', event => {
+    const { target } = event
+    if (target.classList.contains('cell')) {
+      if (target.classList.contains('active')) {
+        return target.classList.remove('active')
+      }
+      target.classList.add('active')
+    }
+  })
+
   window.tetris = tetris
 
   start()

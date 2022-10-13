@@ -82,6 +82,11 @@ body {
     0 0 4px inset var(--grey),
     0 0 4px var(--grey);
   position: relative;
+  background-color: rgba(255, 255, 255, 10%)
+}
+
+.light {
+  background-color: transparent;
 }
 
 .cell .interior {

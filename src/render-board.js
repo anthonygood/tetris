@@ -85,6 +85,31 @@ const updateBuffer = (tetris, bufferDom) => {
   })
 }
 
+const lightmap = (tetris, domCells, ghostBoard) => {
+  const shadowCasterIndices = {}
+  Grid.forEach(tetris.compositeBoard(), (boardCell, [i, j]) => {
+    const domCell = domCells[i][j]
+    if (boardCell) {
+      shadowCasterIndices[j] = true
+      domCell.classList.remove('light')
+      return
+    }
+
+    const ghostCell = ghostBoard[i][j]
+    if (ghostCell) {
+      shadowCasterIndices[j] = false
+      domCell.classList.remove('light')
+      return
+    }
+
+    if (shadowCasterIndices[j]) {
+      return domCell.classList.remove('light')
+    }
+
+    domCell.classList.add('light')
+  })
+}
+
 export const update = (tetris, cells, bufferDom) => (board = tetris.compositeBoard()) => {
   const { tetrominoPosition } = tetris;
   const [tetrominoX, tetrominoY] = tetrominoPosition
@@ -93,6 +118,8 @@ export const update = (tetris, cells, bufferDom) => (board = tetris.compositeBoa
   if (bufferDom) {
     updateBuffer(tetris, bufferDom)
   }
+
+  lightmap(tetris, cells, ghostBoard)
 
   for (let i = 0; i < tetris.height(); i++) {
     for (let j = 0; j < tetris.width(); j++) {
@@ -106,15 +133,6 @@ export const update = (tetris, cells, bufferDom) => (board = tetris.compositeBoa
 
       const isGhost = ghostBoard[i][j];
       toggleClass(cell, isGhost, 'ghost')
-      toggleClass(cell, isGhost, 'neighbour')
-
-      const neighbourTop = ghostBoard[i-1]?.[j]
-      const neighbourLeft = ghostBoard[i][j-1]
-      const neighbourTopLeft = ghostBoard[i-1]?.[j-1]
-
-      toggleClass(cell, neighbourTop, 'neighbour-top')
-      toggleClass(cell, neighbourLeft, 'neighbour-left')
-      toggleClass(cell, neighbourTop && neighbourLeft && neighbourTopLeft, 'neighbour-top-left')
 
       const isDebugCell = (i === tetrominoY) && (j === tetrominoX)
       toggleClass(cell, window.debug && isDebugCell, 'special')
